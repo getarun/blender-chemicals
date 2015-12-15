@@ -1,6 +1,14 @@
 Chemicals in Blender
 ====================
+Full credit to http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
+usefull: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel
 
+requires packages in ubuntu:
+gcc 4 
+code:
+sudo apt-get install python-dev
+sudo apt-get install lincairo2-dev libxml2-dev zlibg1-dev libeigen2-dev
+wget 
 Draws chemicals in Blender using common input formats (smiles, molfiles, cif files,
 etc.). For details, read my [blog post](http://www.patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/).
 
