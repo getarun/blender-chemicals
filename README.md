@@ -1,7 +1,11 @@
 Chemicals in Blender
 ====================
 Full credit to http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
+
 usefull: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel
+
+http://blender.stackexchange.com/questions/9200/make-object-a-a-parent-of-object-b-via-python
+
 
 requires packages in ubuntu:
 gcc 4 
