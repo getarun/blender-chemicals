@@ -2,9 +2,17 @@ Chemicals in Blender
 ====================
 Full credit to http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
 
-usefull: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel
+useful: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel
 
-http://blender.stackexchange.com/questions/9200/make-object-a-a-parent-of-object-b-via-python
+useful: http://blender.stackexchange.com/questions/9200/make-object-a-a-parent-of-object-b-via-python
+
+useful: https://openbabel.org/docs/dev/FileFormats/Overview.html#file-formats
+
+useful: http://www.blender.org/api/blender_python_api_2_64_9/contents.html
+
+useful: http://wiki.blender.org/index.php/Extensions:2.6/Py 
+
+atomic data: http://www.periodictable.com/Elements/029/data.html
 
 
 requires packages in ubuntu:
