@@ -4,5 +4,5 @@
 # python format_converter.py $1 $2 json > molecule.json
 
 #hardcoded for testing
-python format_converter.py 2mol.hin hin json > molecule.json
+#python format_converter.py 2mol.hin hin json > molecule.json
 blender molecule.blend -P molecule_to_blender.py
