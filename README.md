@@ -8,7 +8,7 @@ useful: http://blender.stackexchange.com/questions/9200/make-object-a-a-parent-o
 
 useful: https://openbabel.org/docs/dev/FileFormats/Overview.html#file-formats
 
-useful: http://www.blender.org/api/blender_python_api_2_64_9/contents.html
+useful: http://www.blender.org/api/blender_python_api_2_76_2/
 
 useful: http://wiki.blender.org/index.php/Extensions:2.6/Py 
 
