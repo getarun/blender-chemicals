@@ -20,9 +20,6 @@ requires packages in ubuntu: gcc4
 Draws chemicals in Blender using common input formats (smiles, molfiles, cif files,
 etc.). For details, read my [blog post](http://www.patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/).
 
-Samples
--------
-
 Usage
 -----
 
@@ -59,3 +56,7 @@ sh draw_molecule.sh "CC(C)(C)C1=CC2(C=C(C(C)(C)C)C1=O)CC2(c1ccccc1)c1ccccc1" smi
 ```
 
 will convert the input data (string or file path) and load into Blender.
+
+Compiling with Windows Toolchain is a pain in the ass, but described here:
+
+http://openbabel.org/wiki/Category:Installation
