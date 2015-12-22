@@ -14,9 +14,6 @@ useful: http://wiki.blender.org/index.php/Extensions:2.6/Py
 
 atomic data: http://www.periodictable.com/Elements/029/data.html
 
-
-requires packages in ubuntu: gcc4
-
 Draws chemicals in Blender using common input formats (smiles, molfiles, cif files,
 etc.). For details, read my [blog post](http://www.patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/).
 
