@@ -17,32 +17,11 @@ atomic data: http://www.periodictable.com/Elements/029/data.html
 
 requires packages in ubuntu: gcc4
 
-sudo apt-get install python-dev libpython-dev
-
-sudo apt-get install libcairo2-dev libxml2-dev zlib1g-dev libeigen2-dev
-
-
 Draws chemicals in Blender using common input formats (smiles, molfiles, cif files,
 etc.). For details, read my [blog post](http://www.patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/).
 
 Samples
 -------
-
-####Caffeine, ball and stick
-
-![](http://www.patrick-fuller.com/img/caffeine_step_five_960.png)
-
-####Penicillin, ball and stick, Cycles render
-
-![](http://www.patrick-fuller.com/img/penicillin_in_marble_960.png)
-
-####NU-100, ball and stick
-
-![](http://www.patrick-fuller.com/img/nu_100_blender_960.png)
-
-####NU-100, 3D printed from Blender output
-
-![](http://www.patrick-fuller.com/img/nu_100_3d_print.png)
 
 Usage
 -----
@@ -53,10 +32,14 @@ for chemical file format parsing, which is best installed from source.
 For more, read through the [Open Babel installation instructions](http://openbabel.org/docs/dev/Installation/install.html).
 
 ```
+sudo apt-get install build-essential python-dev libpython-dev libcairo2-dev libxml2-dev zlib1g-dev libeigen2-dev
+
 git clone https://github.com/openbabel/openbabel
 mkdir build && cd build
 cmake ../openbabel -DPYTHON_BINDINGS=ON
 make && make install
+
+sudo apt-get install blender
 ```
 
 From here, you can convert files to Javascript Object Notation with something like
