@@ -2,38 +2,20 @@ Chemicals in Blender
 ====================
 Full credit to http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
 
-usefull: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel
+useful: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel
 
-http://blender.stackexchange.com/questions/9200/make-object-a-a-parent-of-object-b-via-python
+useful: http://blender.stackexchange.com/questions/9200/make-object-a-a-parent-of-object-b-via-python
 
+useful: https://openbabel.org/docs/dev/FileFormats/Overview.html#file-formats
 
-requires packages in ubuntu:
-gcc 4 
-code:
-sudo apt-get install python-dev libpython-dev
-sudo apt-get install libcairo2-dev libxml2-dev zlib1g-dev libeigen2-dev
-wget 
+useful: http://www.blender.org/api/blender_python_api_2_76_2/
+
+useful: http://wiki.blender.org/index.php/Extensions:2.6/Py 
+
+atomic data: http://www.periodictable.com/Elements/029/data.html
+
 Draws chemicals in Blender using common input formats (smiles, molfiles, cif files,
 etc.). For details, read my [blog post](http://www.patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/).
-
-Samples
--------
-
-####Caffeine, ball and stick
-
-![](http://www.patrick-fuller.com/img/caffeine_step_five_960.png)
-
-####Penicillin, ball and stick, Cycles render
-
-![](http://www.patrick-fuller.com/img/penicillin_in_marble_960.png)
-
-####NU-100, ball and stick
-
-![](http://www.patrick-fuller.com/img/nu_100_blender_960.png)
-
-####NU-100, 3D printed from Blender output
-
-![](http://www.patrick-fuller.com/img/nu_100_3d_print.png)
 
 Usage
 -----
@@ -44,10 +26,14 @@ for chemical file format parsing, which is best installed from source.
 For more, read through the [Open Babel installation instructions](http://openbabel.org/docs/dev/Installation/install.html).
 
 ```
+sudo apt-get install build-essential python-dev libpython-dev libcairo2-dev libxml2-dev zlib1g-dev libeigen2-dev
+
 git clone https://github.com/openbabel/openbabel
 mkdir build && cd build
 cmake ../openbabel -DPYTHON_BINDINGS=ON
 make && make install
+
+sudo apt-get install blender
 ```
 
 From here, you can convert files to Javascript Object Notation with something like
@@ -67,3 +53,7 @@ sh draw_molecule.sh "CC(C)(C)C1=CC2(C=C(C(C)(C)C)C1=O)CC2(c1ccccc1)c1ccccc1" smi
 ```
 
 will convert the input data (string or file path) and load into Blender.
+
+Compiling with Windows Toolchain is a pain in the ass, but described here:
+
+http://openbabel.org/wiki/Category:Installation
