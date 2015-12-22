@@ -15,14 +15,14 @@ PATH = os.path.dirname(os.path.realpath(__file__))
 # http://jmol.sourceforge.net/jscolors/
 with open(os.path.join(PATH, "atoms.json")) as in_file:
 	atom_data = json.load(in_file)
-	scale = 2.5
+
 
 def draw_substrate():
 # lattice dimension ... check scaling "C
 	a = atom_data["Cu"]["radius"]* 2 * scale * 6
 #Iteration index, width of substrate drawn
-	n = 10
-	
+	n = 15
+	scale = 1
 	shapes = []
 
 # Add atom primitive
@@ -128,7 +128,7 @@ def add_camera():
 	import bpy
 	tx = 0.0
 	ty = 0.0
-	tz = 80.0
+	tz = 30.0
 
 	rx = 0.0
 	ry = 0.0
