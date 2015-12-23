@@ -19,15 +19,16 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 ###############################################################
 def draw_substrate():
 # lattice dimension ... check scaling "C
-	scale = 0.3 			#scales atomic radius by scale - does not change lattice constant
+	scale = 1 			#scales atomic radius by scale - does not change lattice constant
 
-	a = 2.5
+	a = 0.25
 	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6) #correct spacings for correct nearest neighbour distance to be 2.55
 
 	dx=a1*cos(30)
 	dy=a1*sin(30)/sqrt(3)	
 
 	d= (3.61/sqrt(3)) * scale
+
 	layers = 1
 #Iteration index, width of substrate drawn
 	n = 5
@@ -38,7 +39,7 @@ def draw_substrate():
 	bpy.ops.object.select_all(action='DESELECT')
 	bpy.ops.mesh.primitive_uv_sphere_add()
 	sphere = bpy.context.object
-	sphere.dimensions = [atom_data["Cu"]["radius"]* 2 * scale] * 3
+	sphere.dimensions = [atom_data["Cu"]["radius"]* scale] * 3
 	
 	key = "Cu1"
 	bpy.data.materials.new(name=key)

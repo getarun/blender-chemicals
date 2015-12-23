@@ -95,24 +95,28 @@ def draw_BN():
 					atom_sphere.location = (2*i*dx,j*dy,0)
 					atom_sphere.active_material = bpy.data.materials["B"]
 					bpy.context.scene.objects.link(atom_sphere)
+					shapes.append(atom_sphere)
 					if add_vdW_balls:
 						atom_sphere = sphereBvdW.copy()
 						atom_sphere.data = sphereBvdW.data.copy()
 						atom_sphere.location = (2*i*dx,j*dy,0)
 						atom_sphere.active_material = bpy.data.materials["BvdW"]
 						bpy.context.scene.objects.link(atom_sphere)
+						shapes.append(atom_sphere)
 				if i%3==1:
 					atom_sphere = sphereN.copy()
 					atom_sphere.data = sphereN.data.copy()
 					atom_sphere.location = (2*i*dx,j*dy,0)
 					atom_sphere.active_material = bpy.data.materials["N"]
 					bpy.context.scene.objects.link(atom_sphere)
+					shapes.append(atom_sphere)
 					if add_vdW_balls:
 						atom_sphere = sphereNvdW.copy()
 						atom_sphere.data = sphereNvdW.data.copy()
 						atom_sphere.location = (2*i*dx,j*dy,0)
 						atom_sphere.active_material = bpy.data.materials["NvdW"]
 						bpy.context.scene.objects.link(atom_sphere)
+						shapes.append(atom_sphere)
 
 			if i not in delete_list_2:
 				if i%3==1:
@@ -121,12 +125,14 @@ def draw_BN():
 					atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
 					atom_sphere.active_material = bpy.data.materials["B"]
 					bpy.context.scene.objects.link(atom_sphere)
+					shapes.append(atom_sphere)
 					if add_vdW_balls:
 						atom_sphere = sphereBvdW.copy()
 						atom_sphere.data = sphereBvdW.data.copy()
 						atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
 						atom_sphere.active_material = bpy.data.materials["BvdW"]
 						bpy.context.scene.objects.link(atom_sphere)
+						shapes.append(atom_sphere)
 						
 				if i%3==2:
 					atom_sphere = sphereN.copy()
@@ -134,13 +140,14 @@ def draw_BN():
 					atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
 					atom_sphere.active_material = bpy.data.materials["N"]
 					bpy.context.scene.objects.link(atom_sphere)
+					shapes.append(atom_sphere)
 					if add_vdW_balls:
 						atom_sphere = sphereNvdW.copy()
 						atom_sphere.data = sphereNvdW.data.copy()
 						atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
 						atom_sphere.active_material = bpy.data.materials["NvdW"]
 						bpy.context.scene.objects.link(atom_sphere)
-
+						shapes.append(atom_sphere)
 				bpy.ops.object.parent_set(type='OBJECT')
 
 
