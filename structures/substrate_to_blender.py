@@ -19,19 +19,20 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 ###############################################################
 def draw_substrate():
 # lattice dimension ... check scaling "C
-	scale = 1 			#scales atomic radius by scale - does not change lattice constant
+	scale = 1.5 			#scales atomic radius by scale - does not change lattice constant
 
 	a = 0.25
-	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6) #correct spacings for correct nearest neighbour distance to be 2.55
+	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6)=1.095445
+ #correct spacings for correct nearest neighbour distance to be a
 
 	dx=a1*cos(30)
 	dy=a1*sin(30)/sqrt(3)	
 
-	d= (3.61/sqrt(3)) * scale
+	d= (3.61/sqrt(3)) * scale / 7
 
-	layers = 1
+	layers = 2
 #Iteration index, width of substrate drawn
-	n = 5
+	n = 35
 
 	shapes = []
 
@@ -55,7 +56,7 @@ def draw_substrate():
 	bpy.data.materials.new(name=key)
 	bpy.data.materials[key].diffuse_color = atom_data["Cu"]["color"]
 	bpy.data.materials[key].specular_intensity = 0.2	
-# build first layer
+# build first layer beneath other ones
 	for i in range(n):
 
 		for j in range(n):
@@ -79,13 +80,10 @@ def draw_substrate():
 		for i in range(n):
 
 			for j in range(n):
-
-				dx=a*cos(30)
-				dy=a*sin(30)/sqrt(3)	
 			
 				atom_sphere = sphere.copy()
 				atom_sphere.data = sphere.data.copy()
-				atom_sphere.location = (2*i*dx+dx,j*dy+dy/6,d)
+				atom_sphere.location = (2*i*dx+dx,j*dy+dy/6,-d)
 				atom_sphere.active_material = bpy.data.materials["Cu2"]
 				bpy.context.scene.objects.link(atom_sphere)
 				shapes.append(atom_sphere)
@@ -93,7 +91,7 @@ def draw_substrate():
 
 				atom_sphere = sphere.copy()
 				atom_sphere.data = sphere.data.copy()
-				atom_sphere.location = (2*i*dx+dx+dx,j*dy+dy/2+dy/6,d)
+				atom_sphere.location = (2*i*dx+dx+dx,j*dy+dy/2+dy/6,-d)
 				atom_sphere.active_material = bpy.data.materials["Cu2"]
 				bpy.context.scene.objects.link(atom_sphere)
 				shapes.append(atom_sphere)
@@ -108,7 +106,7 @@ def draw_substrate():
 				dy=a*sin(30)/sqrt(3)	
 				atom_sphere = sphere.copy()
 				atom_sphere.data = sphere.data.copy()
-				atom_sphere.location = (2*i*dx+dx+dx,j*dy+2*dy/6,2*d)
+				atom_sphere.location = (2*i*dx+dx+dx,j*dy+2*dy/6,-2*d)
 				atom_sphere.active_material = bpy.data.materials["Cu3"]
 				bpy.context.scene.objects.link(atom_sphere)
 				shapes.append(atom_sphere)
@@ -116,7 +114,7 @@ def draw_substrate():
 
 				atom_sphere = sphere.copy()
 				atom_sphere.data = sphere.data.copy()
-				atom_sphere.location = (2*i*dx+dx+dx+dx,j*dy+dy/2+2*dy/6,2*d)
+				atom_sphere.location = (2*i*dx+dx+dx+dx,j*dy+dy/2+2*dy/6,-2*d)
 				atom_sphere.active_material = bpy.data.materials["Cu3"]
 				bpy.context.scene.objects.link(atom_sphere)
 				shapes.append(atom_sphere)
@@ -127,9 +125,10 @@ def draw_substrate():
 		shape.select = True
 	bpy.context.scene.objects.active = shapes[0]
 	bpy.ops.object.shade_smooth()
-
+	bpy.ops.object.join()
 # Center object origin to geometry
 	bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
+
 ###############################################################
 def add_light(tx, ty, tz, style):
 
@@ -245,4 +244,4 @@ if __name__ == "__main__":
 	add_camera(3,-4,20,0,0,0,"cam1")
 	add_camera(2,5,5,-90,180,0,"cam2")
 	bpy.context.scene.update()
-	render_all_cameras("/home/ga32xan/git-working-dir/blender-chemicals/substrate-to-blender")
+	render_all_cameras("/home/domenik/git-working-dir/blender-chemicals/substrate-to-blender")

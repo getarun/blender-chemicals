@@ -20,13 +20,13 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 def draw_BN():
 # lattice dimension ... check scaling "C
 	a = 0.255				#a in nm
-	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6) #correct spacings for correct nearest neighbour distance to be 2.55
+	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6) #correct spacings for correct nearest 						neighbour distance to be "a"
 
 	dx=a1*cos(30)
 	dy=a1*sin(30)/sqrt(3)	
 
 #Iteration index, width of substrate drawn
-	n = 10
+	n = 30
 	scale = 1
 	add_vdW_balls = True
 	shapes = []
@@ -151,30 +151,16 @@ def draw_BN():
 				bpy.ops.object.parent_set(type='OBJECT')
 
 
-#			if i not in delete_list_2:
-#				atom_sphere = sphere.copy()
-#				atom_sphere.data = sphere.data.copy()
-#
-#				atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
-#				if i%3==1:
-#					atom_sphere.active_material = bpy.data.materials["B"]
-#				if i%3==2:
-#					atom_sphere.active_material = bpy.data.materials["N"]
-#				bpy.context.scene.objects.link(atom_sphere)
-#				shapes.append(atom_sphere)
-#
-#				bpy.ops.object.parent_set(type='OBJECT')
-#				bpy.context.scene.objects.link(atom_sphere)
-#
-#				shapes.append(atom_sphere)
-#				bpy.ops.object.parent_set(type='OBJECT')
-
     # Smooth and join molecule shapes
 	for shape in shapes:
 		shape.select = True
 	bpy.context.scene.objects.active = shapes[0]
 	bpy.ops.object.shade_smooth()
-#	bpy.ops.object.join()
+	bpy.ops.object.join()
+############################################################
+	bpy.ops.object.select_all(action='DESELECT')
+	sphere.select = True
+	bpy.ops.object.delete()
 
 # Center object origin to geometry
 	bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
@@ -184,7 +170,7 @@ def add_camera():
 	import bpy
 	tx = 0.0
 	ty = 0.0
-	tz = 30.0
+	tz = 5.0
 
 	rx = 0.0
 	ry = 0.0

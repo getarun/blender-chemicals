@@ -37,8 +37,8 @@ def draw_molecule(molecule, center=(0, 0, 0), max_molecule_size=5,
     for atom in molecule["atoms"]:
         max_coord = max(max_coord, *[abs(a) for a in atom["location"]])
     scale = min(max_molecule_size / max_coord, 1)
-    #override scale to match subtrate
-    scale = 1
+#    scale = 0.4 # as suggested
+    scale = 1 / (3.55/ 1.095445)
     # Scale location coordinates and add specified center
     for atom in molecule["atoms"]:
         atom["location"] = [c + x * scale for c, x in zip(center,
@@ -159,7 +159,7 @@ def draw_molecule(molecule, center=(0, 0, 0), max_molecule_size=5,
         shape.select = True
     bpy.context.scene.objects.active = shapes[0]
     bpy.ops.object.shade_smooth()
-    bpy.ops.object.join()
+#    bpy.ops.object.join()
 
     # Center object origin to geometry
     bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
