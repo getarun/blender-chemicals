@@ -19,30 +19,62 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 
 def draw_BN():
 # lattice dimension ... check scaling "C
-	a = 4
-#Iteration index, width of substrate drawn
-	n = 20
-	scale = 1
+	a = 0.255				#a in nm
+	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6) #correct spacings for correct nearest neighbour distance to be 2.55
 
-	dx=a*cos(30)
-	dy=a*sin(30)/sqrt(3)	
-			
+	dx=a1*cos(30)
+	dy=a1*sin(30)/sqrt(3)	
+
+#Iteration index, width of substrate drawn
+	n = 10
+	scale = 1
+	add_vdW_balls = True
 	shapes = []
 
-# Add atom primitive
+# Add atom samples
 	bpy.ops.object.select_all(action='DESELECT')
 	bpy.ops.mesh.primitive_uv_sphere_add()
-	sphere = bpy.context.object
-	sphere.dimensions = [atom_data["Cu"]["radius"]* 2 * scale] * 3
-	
+	sphereN = bpy.context.object
+	sphereN.dimensions = [atom_data["N"]["radius"]* scale] * 3
+
+	bpy.ops.object.select_all(action='DESELECT')
+	bpy.ops.mesh.primitive_uv_sphere_add()
+	sphereNvdW = bpy.context.object
+	sphereNvdW.dimensions = [atom_data["N"]["vdWradius"]* scale] * 3
+
+	bpy.ops.object.select_all(action='DESELECT')
+	bpy.ops.mesh.primitive_uv_sphere_add()
+	sphereB = bpy.context.object
+	sphereB.dimensions = [atom_data["B"]["radius"]* scale] * 3
+
+	bpy.ops.object.select_all(action='DESELECT')
+	bpy.ops.mesh.primitive_uv_sphere_add()
+	sphereBvdW = bpy.context.object
+	sphereBvdW.dimensions = [atom_data["B"]["vdWradius"]* scale] * 3
+######################
+
+	#the radius from atoms.json is written in pm and only checked for B,N,Cu
 	key = "B"
 	bpy.data.materials.new(name=key)
 	bpy.data.materials[key].diffuse_color = atom_data[key]["color"]
-	bpy.data.materials[key].specular_intensity = 0.2	
+	bpy.data.materials[key].specular_intensity = 0.2
+	key = "BvdW"	#add translucent sphere to indicate vanderWaalsradius
+	bpy.data.materials.new(name=key)
+	bpy.data.materials[key].diffuse_color = atom_data["B"]["color"]
+	bpy.data.materials[key].use_transparency = 1
+	bpy.data.materials[key].transparency_method = "RAYTRACE"
+	bpy.data.materials[key].alpha=0.3
+
 	key = "N"
 	bpy.data.materials.new(name=key)
 	bpy.data.materials[key].diffuse_color = atom_data[key]["color"]
-	bpy.data.materials[key].specular_intensity = 0.2	
+	key = "NvdW"
+	bpy.data.materials.new(name=key)
+	bpy.data.materials[key].diffuse_color = atom_data["N"]["color"]
+	bpy.data.materials[key].use_transparency  = 1
+	bpy.data.materials[key].transparency_method = "RAYTRACE"
+	bpy.data.materials[key].alpha=0.3
+
 
 	delete_list_1 = []
 	for i in range(n):
@@ -56,29 +88,79 @@ def draw_BN():
 
 		for j in range(n):
 
-			atom_sphere = sphere.copy()
-			atom_sphere.data = sphere.data.copy()
 			if i not in delete_list_1:
-				atom_sphere.location = (2*i*dx,j*dy,0)
 				if i%3==0:
+					atom_sphere = sphereB.copy()
+					atom_sphere.data = sphereB.data.copy()
+					atom_sphere.location = (2*i*dx,j*dy,0)
 					atom_sphere.active_material = bpy.data.materials["B"]
+					bpy.context.scene.objects.link(atom_sphere)
+					if add_vdW_balls:
+						atom_sphere = sphereBvdW.copy()
+						atom_sphere.data = sphereBvdW.data.copy()
+						atom_sphere.location = (2*i*dx,j*dy,0)
+						atom_sphere.active_material = bpy.data.materials["BvdW"]
+						bpy.context.scene.objects.link(atom_sphere)
 				if i%3==1:
+					atom_sphere = sphereN.copy()
+					atom_sphere.data = sphereN.data.copy()
+					atom_sphere.location = (2*i*dx,j*dy,0)
 					atom_sphere.active_material = bpy.data.materials["N"]
-				bpy.context.scene.objects.link(atom_sphere)
-				shapes.append(atom_sphere)
+					bpy.context.scene.objects.link(atom_sphere)
+					if add_vdW_balls:
+						atom_sphere = sphereNvdW.copy()
+						atom_sphere.data = sphereNvdW.data.copy()
+						atom_sphere.location = (2*i*dx,j*dy,0)
+						atom_sphere.active_material = bpy.data.materials["NvdW"]
+						bpy.context.scene.objects.link(atom_sphere)
+
+			if i not in delete_list_2:
+				if i%3==1:
+					atom_sphere = sphereB.copy()
+					atom_sphere.data = sphereB.data.copy()
+					atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
+					atom_sphere.active_material = bpy.data.materials["B"]
+					bpy.context.scene.objects.link(atom_sphere)
+					if add_vdW_balls:
+						atom_sphere = sphereBvdW.copy()
+						atom_sphere.data = sphereBvdW.data.copy()
+						atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
+						atom_sphere.active_material = bpy.data.materials["BvdW"]
+						bpy.context.scene.objects.link(atom_sphere)
+						
+				if i%3==2:
+					atom_sphere = sphereN.copy()
+					atom_sphere.data = sphereN.data.copy()
+					atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
+					atom_sphere.active_material = bpy.data.materials["N"]
+					bpy.context.scene.objects.link(atom_sphere)
+					if add_vdW_balls:
+						atom_sphere = sphereNvdW.copy()
+						atom_sphere.data = sphereNvdW.data.copy()
+						atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
+						atom_sphere.active_material = bpy.data.materials["NvdW"]
+						bpy.context.scene.objects.link(atom_sphere)
+
 				bpy.ops.object.parent_set(type='OBJECT')
 
-			atom_sphere = sphere.copy()
-			atom_sphere.data = sphere.data.copy()
-			if i not in delete_list_2:
-				atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
-				if i%3==1:
-					atom_sphere.active_material = bpy.data.materials["B"]
-				if i%3==2:
-					atom_sphere.active_material = bpy.data.materials["N"]
-				bpy.context.scene.objects.link(atom_sphere)
-				shapes.append(atom_sphere)
-				bpy.ops.object.parent_set(type='OBJECT')
+
+#			if i not in delete_list_2:
+#				atom_sphere = sphere.copy()
+#				atom_sphere.data = sphere.data.copy()
+#
+#				atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
+#				if i%3==1:
+#					atom_sphere.active_material = bpy.data.materials["B"]
+#				if i%3==2:
+#					atom_sphere.active_material = bpy.data.materials["N"]
+#				bpy.context.scene.objects.link(atom_sphere)
+#				shapes.append(atom_sphere)
+#
+#				bpy.ops.object.parent_set(type='OBJECT')
+#				bpy.context.scene.objects.link(atom_sphere)
+#
+#				shapes.append(atom_sphere)
+#				bpy.ops.object.parent_set(type='OBJECT')
 
     # Smooth and join molecule shapes
 	for shape in shapes:

@@ -19,11 +19,19 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 ###############################################################
 def draw_substrate():
 # lattice dimension ... check scaling "C
-	a = 2.55
-	d= 3.61/sqrt(3)
+	scale = 0.3 			#scales atomic radius by scale - does not change lattice constant
+
+	a = 2.5
+	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6) #correct spacings for correct nearest neighbour distance to be 2.55
+
+	dx=a1*cos(30)
+	dy=a1*sin(30)/sqrt(3)	
+
+	d= (3.61/sqrt(3)) * scale
+	layers = 1
 #Iteration index, width of substrate drawn
 	n = 5
-	scale = 1
+
 	shapes = []
 
 # Add atom primitive
@@ -32,31 +40,29 @@ def draw_substrate():
 	sphere = bpy.context.object
 	sphere.dimensions = [atom_data["Cu"]["radius"]* 2 * scale] * 3
 	
-	key = "Cu"
+	key = "Cu1"
 	bpy.data.materials.new(name=key)
-	bpy.data.materials[key].diffuse_color = atom_data[key]["color"]
+	bpy.data.materials[key].diffuse_color = atom_data["Ca"]["color"]
 	bpy.data.materials[key].specular_intensity = 0.2	
-	key = "Ag"
-	bpy.data.materials.new(name=key)
-	bpy.data.materials[key].diffuse_color = atom_data[key]["color"]
-	bpy.data.materials[key].specular_intensity = 0.2	
-	key = "Fe"
-	bpy.data.materials.new(name=key)
-	bpy.data.materials[key].diffuse_color = atom_data[key]["color"]
-	bpy.data.materials[key].specular_intensity = 0.2
 	
-# build first layer
+	key = "Cu2"
+	bpy.data.materials.new(name=key)
+	bpy.data.materials[key].diffuse_color = atom_data["Au"]["color"]
+	bpy.data.materials[key].specular_intensity = 0.2	
 
+	key = "Cu3"
+	bpy.data.materials.new(name=key)
+	bpy.data.materials[key].diffuse_color = atom_data["Cu"]["color"]
+	bpy.data.materials[key].specular_intensity = 0.2	
+# build first layer
 	for i in range(n):
 
 		for j in range(n):
 
-			dx=a*cos(30)
-			dy=a*sin(30)/sqrt(3)	
-			
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
 			atom_sphere.location = (2*i*dx,j*dy,0)
+			atom_sphere.active_material = bpy.data.materials["Cu1"]
 			bpy.context.scene.objects.link(atom_sphere)
 			shapes.append(atom_sphere)
 			bpy.ops.object.parent_set(type='OBJECT')
@@ -64,55 +70,56 @@ def draw_substrate():
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
 			atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
+			atom_sphere.active_material = bpy.data.materials["Cu1"]
 			bpy.context.scene.objects.link(atom_sphere)
 			shapes.append(atom_sphere)
 
-# build second layer
-	for i in range(n):
+	if layers > 1: # build second layer
+		for i in range(n):
 
-		for j in range(n):
+			for j in range(n):
 
-			dx=a*cos(30)
-			dy=a*sin(30)/sqrt(3)	
+				dx=a*cos(30)
+				dy=a*sin(30)/sqrt(3)	
 			
-			atom_sphere = sphere.copy()
-			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx,j*dy+dy/6,d)
-			atom_sphere.active_material = bpy.data.materials["Ag"]
-			bpy.context.scene.objects.link(atom_sphere)
-			shapes.append(atom_sphere)
-			bpy.ops.object.parent_set(type='OBJECT')
+				atom_sphere = sphere.copy()
+				atom_sphere.data = sphere.data.copy()
+				atom_sphere.location = (2*i*dx+dx,j*dy+dy/6,d)
+				atom_sphere.active_material = bpy.data.materials["Cu2"]
+				bpy.context.scene.objects.link(atom_sphere)
+				shapes.append(atom_sphere)
+				bpy.ops.object.parent_set(type='OBJECT')
 
-			atom_sphere = sphere.copy()
-			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx+dx,j*dy+dy/2+dy/6,d)
-			atom_sphere.active_material = bpy.data.materials["Ag"]
-			bpy.context.scene.objects.link(atom_sphere)
-			shapes.append(atom_sphere)
-	#bpy.ops.object.select_all(action='SELECT')
+				atom_sphere = sphere.copy()
+				atom_sphere.data = sphere.data.copy()
+				atom_sphere.location = (2*i*dx+dx+dx,j*dy+dy/2+dy/6,d)
+				atom_sphere.active_material = bpy.data.materials["Cu2"]
+				bpy.context.scene.objects.link(atom_sphere)
+				shapes.append(atom_sphere)
+		#bpy.ops.object.select_all(action='SELECT')
 
-# build third layer
-	for i in range(n):
+	if layers > 2: # build third layer
+		for i in range(n):
 
-		for j in range(n):
+			for j in range(n):
 
-			dx=a*cos(30)
-			dy=a*sin(30)/sqrt(3)	
-			atom_sphere = sphere.copy()
-			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx+dx,j*dy+2*dy/6,2*d)
-			atom_sphere.active_material = bpy.data.materials["Fe"]
-			bpy.context.scene.objects.link(atom_sphere)
-			shapes.append(atom_sphere)
-			bpy.ops.object.parent_set(type='OBJECT')
+				dx=a*cos(30)
+				dy=a*sin(30)/sqrt(3)	
+				atom_sphere = sphere.copy()
+				atom_sphere.data = sphere.data.copy()
+				atom_sphere.location = (2*i*dx+dx+dx,j*dy+2*dy/6,2*d)
+				atom_sphere.active_material = bpy.data.materials["Cu3"]
+				bpy.context.scene.objects.link(atom_sphere)
+				shapes.append(atom_sphere)
+				bpy.ops.object.parent_set(type='OBJECT')
 
-			atom_sphere = sphere.copy()
-			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx+dx+dx,j*dy+dy/2+2*dy/6,2*d)
-			atom_sphere.active_material = bpy.data.materials["Fe"]
-			bpy.context.scene.objects.link(atom_sphere)
-			shapes.append(atom_sphere)
-	#bpy.ops.object.select_all(action='SELECT')
+				atom_sphere = sphere.copy()
+				atom_sphere.data = sphere.data.copy()
+				atom_sphere.location = (2*i*dx+dx+dx+dx,j*dy+dy/2+2*dy/6,2*d)
+				atom_sphere.active_material = bpy.data.materials["Cu3"]
+				bpy.context.scene.objects.link(atom_sphere)
+				shapes.append(atom_sphere)
+		#bpy.ops.object.select_all(action='SELECT')
 
     # Smooth and join molecule shapes
 	for shape in shapes:
