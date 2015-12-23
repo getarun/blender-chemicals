@@ -156,6 +156,7 @@ def clear_scene():
 	if "Camera" in bpy.data.objects.keys():
 		bpy.data.objects.get("Lamp").select = True
 	bpy.ops.object.delete()
+
 ###############################################################
 def add_camera(tx,ty,tz,rx,ry,rz,label):
 	import bpy
