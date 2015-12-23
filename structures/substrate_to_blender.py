@@ -20,8 +20,9 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 def draw_substrate():
 # lattice dimension ... check scaling "C
 	a = 2.55
+	d= 3.61/sqrt(3)
 #Iteration index, width of substrate drawn
-	n = 15
+	n = 5
 	scale = 1
 	shapes = []
 
@@ -76,7 +77,7 @@ def draw_substrate():
 			
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx,j*dy+dy/6,3)
+			atom_sphere.location = (2*i*dx+dx,j*dy+dy/6,d)
 			atom_sphere.active_material = bpy.data.materials["Ag"]
 			bpy.context.scene.objects.link(atom_sphere)
 			shapes.append(atom_sphere)
@@ -84,7 +85,7 @@ def draw_substrate():
 
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx+dx,j*dy+dy/2+dy/6,3)
+			atom_sphere.location = (2*i*dx+dx+dx,j*dy+dy/2+dy/6,d)
 			atom_sphere.active_material = bpy.data.materials["Ag"]
 			bpy.context.scene.objects.link(atom_sphere)
 			shapes.append(atom_sphere)
@@ -99,7 +100,7 @@ def draw_substrate():
 			dy=a*sin(30)/sqrt(3)	
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx+dx,j*dy+2*dy/6,6)
+			atom_sphere.location = (2*i*dx+dx+dx,j*dy+2*dy/6,2*d)
 			atom_sphere.active_material = bpy.data.materials["Fe"]
 			bpy.context.scene.objects.link(atom_sphere)
 			shapes.append(atom_sphere)
@@ -107,7 +108,7 @@ def draw_substrate():
 
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx+dx+dx,j*dy+dy/2+2*dy/6,6)
+			atom_sphere.location = (2*i*dx+dx+dx+dx,j*dy+dy/2+2*dy/6,2*d)
 			atom_sphere.active_material = bpy.data.materials["Fe"]
 			bpy.context.scene.objects.link(atom_sphere)
 			shapes.append(atom_sphere)
@@ -118,23 +119,48 @@ def draw_substrate():
 		shape.select = True
 	bpy.context.scene.objects.active = shapes[0]
 	bpy.ops.object.shade_smooth()
-	bpy.ops.object.join()
 
 # Center object origin to geometry
 	bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
 
-	bpy.context.scene.update()
-def add_camera():
+def add_light(tx, ty, tz, style):
+
+	scene = bpy.context.scene
+
+	# Create new lamp datablock
+	lamp_data = bpy.data.lamps.new(name="New Lamp", type=style)
+
+	# Create new object with our lamp datablock
+	lamp_object = bpy.data.objects.new(name="New Lamp", object_data=lamp_data)
+
+	# Link lamp object to the scene so it'll appear in this scene
+	scene.objects.link(lamp_object)
+
+	# Place lamp to a specified location
+	lamp_object.location = (tx, ty, tz)
+
+	# And finally select it make active
+	lamp_object.select = True
+	scene.objects.active = lamp_object
+def clear_scene():
+# If the starting cube is there, remove it
+	if "Cube" in bpy.data.objects.keys():
+		bpy.data.objects.get("Cube").select = True
+	if "Lamp" in bpy.data.objects.keys():
+		bpy.data.objects.get("Lamp").select = True
+	bpy.ops.object.delete()
+
+def add_camera(tx,ty,tz,rx,ry,rz):
 	import bpy
-	tx = 0.0
-	ty = 0.0
-	tz = 30.0
+#	tx = 0.0
+#	ty = 0.0
+#	tz = 30.0
 
-	rx = 0.0
-	ry = 0.0
-	rz = 0.0
+#	rx = 0.0
+#	ry = 0.0
+#	rz = 0.0
 
-	fov = 50.0
+	fov = 25.0
 
 	pi = 3.14159265
 
@@ -160,5 +186,14 @@ def add_camera():
 
 # Runs the method
 if __name__ == "__main__":
+	clear_scene()	
 	draw_substrate()
-	add_camera()
+
+	add_light(2,-3,10,"HEMI")
+	add_light(0,0,12,"POINT")
+	add_light(0,-10,13,"POINT")
+	add_light(10,0,12,"POINT")
+	add_light(10,-10,12,"POINT")
+
+	add_camera(0,0,30,0,0,0)
+	bpy.context.scene.update()
