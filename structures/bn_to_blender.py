@@ -19,9 +19,9 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 
 def draw_BN():
 # lattice dimension ... check scaling "C
-	a = 5
+	a = 4
 #Iteration index, width of substrate drawn
-	n = 15
+	n = 20
 	scale = 1
 
 	dx=a*cos(30)
@@ -44,33 +44,48 @@ def draw_BN():
 	bpy.data.materials[key].diffuse_color = atom_data[key]["color"]
 	bpy.data.materials[key].specular_intensity = 0.2	
 
+	delete_list_1 = []
+	for i in range(n):
+		delete_list_1.append(2+3*i)
+	delete_list_2 = []
+	for j in range(n):
+		delete_list_2.append(3*j)
 # build first layer
+
 	for i in range(n):
 
 		for j in range(n):
 
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx,j*dy,0)
-			atom_sphere.active_material = bpy.data.materials["B"]
-			bpy.context.scene.objects.link(atom_sphere)
-			shapes.append(atom_sphere)
-			bpy.ops.object.parent_set(type='OBJECT')
+			if i not in delete_list_1:
+				atom_sphere.location = (2*i*dx,j*dy,0)
+				if i%3==0:
+					atom_sphere.active_material = bpy.data.materials["B"]
+				if i%3==1:
+					atom_sphere.active_material = bpy.data.materials["N"]
+				bpy.context.scene.objects.link(atom_sphere)
+				shapes.append(atom_sphere)
+				bpy.ops.object.parent_set(type='OBJECT')
 
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
-			atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
-			atom_sphere.active_material = bpy.data.materials["N"]
-			bpy.context.scene.objects.link(atom_sphere)
-			shapes.append(atom_sphere)
-			bpy.ops.object.parent_set(type='OBJECT')
+			if i not in delete_list_2:
+				atom_sphere.location = (2*i*dx+dx,j*dy+dy/2,0)
+				if i%3==1:
+					atom_sphere.active_material = bpy.data.materials["B"]
+				if i%3==2:
+					atom_sphere.active_material = bpy.data.materials["N"]
+				bpy.context.scene.objects.link(atom_sphere)
+				shapes.append(atom_sphere)
+				bpy.ops.object.parent_set(type='OBJECT')
 
     # Smooth and join molecule shapes
 	for shape in shapes:
 		shape.select = True
 	bpy.context.scene.objects.active = shapes[0]
 	bpy.ops.object.shade_smooth()
-	bpy.ops.object.join()
+#	bpy.ops.object.join()
 
 # Center object origin to geometry
 	bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")

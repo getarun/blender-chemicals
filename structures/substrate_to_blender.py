@@ -16,7 +16,7 @@ PATH = os.path.dirname(os.path.realpath(__file__))
 with open(os.path.join(PATH, "atoms.json")) as in_file:
 	atom_data = json.load(in_file)
 
-
+###############################################################
 def draw_substrate():
 # lattice dimension ... check scaling "C
 	a = 2.55
@@ -122,68 +122,106 @@ def draw_substrate():
 
 # Center object origin to geometry
 	bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
-
+###############################################################
 def add_light(tx, ty, tz, style):
 
 	scene = bpy.context.scene
-
 	# Create new lamp datablock
 	lamp_data = bpy.data.lamps.new(name="New Lamp", type=style)
-
 	# Create new object with our lamp datablock
 	lamp_object = bpy.data.objects.new(name="New Lamp", object_data=lamp_data)
-
 	# Link lamp object to the scene so it'll appear in this scene
 	scene.objects.link(lamp_object)
-
 	# Place lamp to a specified location
 	lamp_object.location = (tx, ty, tz)
-
 	# And finally select it make active
 	lamp_object.select = True
 	scene.objects.active = lamp_object
+
+###############################################################
 def clear_scene():
 # If the starting cube is there, remove it
 	if "Cube" in bpy.data.objects.keys():
 		bpy.data.objects.get("Cube").select = True
 	if "Lamp" in bpy.data.objects.keys():
 		bpy.data.objects.get("Lamp").select = True
+	if "Camera" in bpy.data.objects.keys():
+		bpy.data.objects.get("Lamp").select = True
 	bpy.ops.object.delete()
-
-def add_camera(tx,ty,tz,rx,ry,rz):
+###############################################################
+def add_camera(tx,ty,tz,rx,ry,rz,label):
 	import bpy
-#	tx = 0.0
-#	ty = 0.0
-#	tz = 30.0
-
-#	rx = 0.0
-#	ry = 0.0
-#	rz = 0.0
 
 	fov = 25.0
-
 	pi = 3.14159265
 
-	scene = bpy.data.scenes["Scene"]
+#	angle= 50
+#	axis=(1,0,0)
+
+	scene = bpy.context.scene
+	# Create new lamp datablock
+	camera_data = bpy.data.cameras.new(name=label)
+	# Create new object with our lamp datablock
+	camera_object = bpy.data.objects.new(name=label, object_data=camera_data)
+	# Link lamp object to the scene so it'll appear in this scene
+	scene.objects.link(camera_object)
+	# Place lamp to a specified location
+	camera_object.location = (tx, ty, tz)
+
+	# And finally select it and make it active
+	camera_object.select = True
+	scene.objects.active = camera_object
+
+#	obj_types = ['CAMERA']
+#	for obj in bpy.data.objects:
+#		if obj.type in obj_types:
+#			if len(obj.keys()) > 1:
+#		    # First item is _RNA_UI
+#				print("Object",obj.name,"custom properties:")
+#				for K in obj.keys():
+#					if K not in '_RNA_UI':
+#						print( K , "-" , obj[K] )
+#			else:
+#				print("Only has RNA_UI property")
+
+
+
+###############################################################
+#	scene = bpy.data.scenes["Scene"]
 
 	# Set render resolution
-	scene.render.resolution_x = 1080
-	scene.render.resolution_y = 920
+#	scene.render.resolution_x = 1080
+#	scene.render.resolution_y = 920
 
 	# Set camera fov in degrees
-	scene.camera.data.angle = fov*(pi/180.0)
+#	scene.camera.data.angle = fov*(pi/180.0)
 
 	# Set camera rotation in euler angles
-	scene.camera.rotation_mode = 'XYZ'
-	scene.camera.rotation_euler[0] = rx*(pi/180.0)
-	scene.camera.rotation_euler[1] = ry*(pi/180.0)
-	scene.camera.rotation_euler[2] = rz*(pi/180.0)
+#	scene.camera.rotation_mode = 'XYZ'
+#	scene.camera.rotation_euler[0] = rx*(pi/180.0)
+#	scene.camera.rotation_euler[1] = ry*(pi/180.0)
+#	scene.camera.rotation_euler[2] = rz*(pi/180.0)
 
 	# Set camera translation
-	scene.camera.location.x = tx
-	scene.camera.location.y = ty
-	scene.camera.location.z = tz
+#	scene.camera.location.x = tx
+#	scene.camera.location.y = ty
+#	scene.camera.location.z = tz
+#	scene.objects.link(camera)
 
+###############################################################
+
+def render_all_cameras(path):
+
+	scene = bpy.context.scene
+	for ob in scene.objects:
+		if ob.type == 'CAMERA':
+			bpy.context.scene.camera = ob
+			print('Set camera %s' % ob.name )
+			file = os.path.join(path, ob.name )
+			bpy.context.scene.render.filepath = file
+			bpy.ops.render.render( write_still=True )	
+
+###############################################################
 # Runs the method
 if __name__ == "__main__":
 	clear_scene()	
@@ -195,5 +233,7 @@ if __name__ == "__main__":
 	add_light(10,0,12,"POINT")
 	add_light(10,-10,12,"POINT")
 
-	add_camera(0,0,30,0,0,0)
+	add_camera(3,-4,20,0,0,0,"cam1")
+	add_camera(2,5,5,-90,180,0,"cam2")
 	bpy.context.scene.update()
+	render_all_cameras("/home/ga32xan/git-working-dir/blender-chemicals/substrate-to-blender")
