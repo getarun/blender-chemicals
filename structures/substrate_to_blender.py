@@ -19,7 +19,7 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 
 def draw_substrate():
 # lattice dimension ... check scaling "C
-	a = atom_data["Cu"]["radius"]* 2 * scale * 6
+	a = 2.55
 #Iteration index, width of substrate drawn
 	n = 15
 	scale = 1
