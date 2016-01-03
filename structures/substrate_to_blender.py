@@ -19,20 +19,20 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 ###############################################################
 def draw_substrate():
 # lattice dimension ... check scaling "C
-	scale = 1.5 			#scales atomic radius by scale - does not change lattice constant
+	scale = 1 			#scales atomic radius by scale - does not change lattice constant
 
-	a = 0.25
+	a = 0.25			#lattice constant in nm
 	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6)=1.095445
  #correct spacings for correct nearest neighbour distance to be a
 
 	dx=a1*cos(30)
 	dy=a1*sin(30)/sqrt(3)	
 
-	d= (3.61/sqrt(3)) * scale / 7
+	d= (3.61/sqrt(3)) * scale / 7	#reduce original layer spacing
 
-	layers = 2
+	layers = 2			### number of layers to draw
 #Iteration index, width of substrate drawn
-	n = 35
+	n = 50
 
 	shapes = []
 

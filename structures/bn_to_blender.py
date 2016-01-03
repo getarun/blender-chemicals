@@ -26,7 +26,7 @@ def draw_BN():
 	dy=a1*sin(30)/sqrt(3)	
 
 #Iteration index, width of substrate drawn
-	n = 30
+	n = 50
 	scale = 1
 	add_vdW_balls = True
 	shapes = []
@@ -75,7 +75,7 @@ def draw_BN():
 	bpy.data.materials[key].transparency_method = "RAYTRACE"
 	bpy.data.materials[key].alpha=0.3
 
-
+# remove special atoms to achieve BN layer
 	delete_list_1 = []
 	for i in range(n):
 		delete_list_1.append(2+3*i)
@@ -156,51 +156,30 @@ def draw_BN():
 		shape.select = True
 	bpy.context.scene.objects.active = shapes[0]
 	bpy.ops.object.shade_smooth()
-	bpy.ops.object.join()
+#	bpy.ops.object.join()
+
 ############################################################
-	bpy.ops.object.select_all(action='DESELECT')
-	sphere.select = True
-	bpy.ops.object.delete()
+#	bpy.ops.object.select_all(action='DESELECT')
+#	sphere.select = True
+#	bpy.ops.object.delete()
 
 # Center object origin to geometry
 	bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
 
 	bpy.context.scene.update()
-def add_camera():
-	import bpy
-	tx = 0.0
-	ty = 0.0
-	tz = 5.0
 
-	rx = 0.0
-	ry = 0.0
-	rz = 0.0
-
-	fov = 50.0
-
-	pi = 3.14159265
-
-	scene = bpy.data.scenes["Scene"]
-
-	# Set render resolution
-	scene.render.resolution_x = 1080
-	scene.render.resolution_y = 920
-
-	# Set camera fov in degrees
-	scene.camera.data.angle = fov*(pi/180.0)
-
-	# Set camera rotation in euler angles
-	scene.camera.rotation_mode = 'XYZ'
-	scene.camera.rotation_euler[0] = rx*(pi/180.0)
-	scene.camera.rotation_euler[1] = ry*(pi/180.0)
-	scene.camera.rotation_euler[2] = rz*(pi/180.0)
-
-	# Set camera translation
-	scene.camera.location.x = tx
-	scene.camera.location.y = ty
-	scene.camera.location.z = tz
+def clear_scene():
+# If the starting cube is there, remove it
+	if "Cube" in bpy.data.objects.keys():
+		bpy.data.objects.get("Cube").select = True
+	if "Lamp" in bpy.data.objects.keys():
+		bpy.data.objects.get("Lamp").select = True
+	if "Camera" in bpy.data.objects.keys():
+		bpy.data.objects.get("Camera").select = True
+	bpy.ops.object.delete()
 
 # Runs the method
 if __name__ == "__main__":
+	clear_scene()
 	draw_BN()
-	add_camera()
+#	add_camera()
