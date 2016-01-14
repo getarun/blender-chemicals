@@ -22,18 +22,20 @@ def draw_substrate():
 	scale = 1 			#scales atomic radius by scale - does not change lattice constant
 
 	a = 0.25			#lattice constant in nm
-	a1 = a * 3.55	/ 1.095445	#sqrt(dx**2+dy**2)=sqrt(5/6)=1.095445
+				#sqrt(dx**2+dy**2)=sqrt(5/6)=1.095445	see factor 3.55 in readme.md
+	a1 = a * 3.517 / 1.9111	# ####3,240692139
  #correct spacings for correct nearest neighbour distance to be a
 
-	dx=a1*cos(30)
-	dy=a1*sin(30)/sqrt(3)	
+	dx=a1*cos(30)			# 0,810173035
+	dy=a1*sin(30)/sqrt(3)		# 0,935507239
 
-	d= (3.61/sqrt(3)) * scale / 7	#reduce original layer spacing
+	d= (a1/sqrt(3)) * scale	#  original layer spacing
 
-	layers = 2			### number of layers to draw
+	layers = 2			### number of layers to draw ... >8gb for 3rd layer with n=50... 
 #Iteration index, width of substrate drawn
-	n = 75
-
+	n = 55
+	smooth = False
+	join = False
 	shapes = []
 
 # Add atom primitive
@@ -44,18 +46,24 @@ def draw_substrate():
 	
 	key = "Cu1"
 	bpy.data.materials.new(name=key)
-	bpy.data.materials[key].diffuse_color = atom_data["Ca"]["color"]
-	bpy.data.materials[key].specular_intensity = 0.2	
+	bpy.data.materials[key].diffuse_color = atom_data["Cu"]["color"]
+	bpy.data.materials[key].specular_intensity = 0.2
+	bpy.data.materials[key].diffuse_intensity = 0.7	
 	
 	key = "Cu2"
 	bpy.data.materials.new(name=key)
-	bpy.data.materials[key].diffuse_color = atom_data["Au"]["color"]
+	bpy.data.materials[key].diffuse_color = atom_data["Cu"]["color"]
 	bpy.data.materials[key].specular_intensity = 0.2	
+	bpy.data.materials[key].use_shadeless = True	
+	bpy.data.materials[key].diffuse_intensity = 0.5	
 
 	key = "Cu3"
 	bpy.data.materials.new(name=key)
 	bpy.data.materials[key].diffuse_color = atom_data["Cu"]["color"]
-	bpy.data.materials[key].specular_intensity = 0.2	
+	bpy.data.materials[key].specular_intensity = 0	
+	bpy.data.materials[key].use_shadeless = True	
+	bpy.data.materials[key].diffuse_intensity = 0.2	
+
 # build first layer beneath other ones
 	for i in range(n):
 
@@ -67,7 +75,7 @@ def draw_substrate():
 			atom_sphere.active_material = bpy.data.materials["Cu1"]
 			bpy.context.scene.objects.link(atom_sphere)
 			shapes.append(atom_sphere)
-			bpy.ops.object.parent_set(type='OBJECT')
+#			bpy.ops.object.parent_set(type='OBJECT')
 
 			atom_sphere = sphere.copy()
 			atom_sphere.data = sphere.data.copy()
@@ -87,7 +95,7 @@ def draw_substrate():
 				atom_sphere.active_material = bpy.data.materials["Cu2"]
 				bpy.context.scene.objects.link(atom_sphere)
 				shapes.append(atom_sphere)
-				bpy.ops.object.parent_set(type='OBJECT')
+#				bpy.ops.object.parent_set(type='OBJECT')
 
 				atom_sphere = sphere.copy()
 				atom_sphere.data = sphere.data.copy()
@@ -102,16 +110,13 @@ def draw_substrate():
 
 			for j in range(n):
 
-				dx=a*cos(30)
-				dy=a*sin(30)/sqrt(3)	
 				atom_sphere = sphere.copy()
 				atom_sphere.data = sphere.data.copy()
 				atom_sphere.location = (2*i*dx+dx+dx,j*dy+2*dy/6,-2*d)
 				atom_sphere.active_material = bpy.data.materials["Cu3"]
 				bpy.context.scene.objects.link(atom_sphere)
 				shapes.append(atom_sphere)
-				bpy.ops.object.parent_set(type='OBJECT')
-
+#				bpy.ops.object.parent_set(type='OBJECT')
 				atom_sphere = sphere.copy()
 				atom_sphere.data = sphere.data.copy()
 				atom_sphere.location = (2*i*dx+dx+dx+dx,j*dy+dy/2+2*dy/6,-2*d)
@@ -121,13 +126,14 @@ def draw_substrate():
 		#bpy.ops.object.select_all(action='SELECT')
 
     # Smooth and join molecule shapes
-	for shape in shapes:
-		shape.select = True
-	bpy.context.scene.objects.active = shapes[0]
-	bpy.ops.object.shade_smooth()
-#	bpy.ops.object.join()
+	if smooth:
+		for shape in shapes:
+			shape.select = True
+		bpy.context.scene.objects.active = shapes[0]
+		bpy.ops.object.shade_smooth()
+		if join: bpy.ops.object.join()
 # Center object origin to geometry
-	bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
+#	bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
 
 ###############################################################
 def add_light(tx, ty, tz, style):
@@ -159,7 +165,7 @@ def clear_scene():
 ###############################################################
 def add_camera(tx,ty,tz,rx,ry,rz,label):
 	import bpy
-
+	
 	fov = 25.0
 	pi = 3.14159265
 
@@ -179,20 +185,6 @@ def add_camera(tx,ty,tz,rx,ry,rz,label):
 	# And finally select it and make it active
 	camera_object.select = True
 	scene.objects.active = camera_object
-
-#	obj_types = ['CAMERA']
-#	for obj in bpy.data.objects:
-#		if obj.type in obj_types:
-#			if len(obj.keys()) > 1:
-#		    # First item is _RNA_UI
-#				print("Object",obj.name,"custom properties:")
-#				for K in obj.keys():
-#					if K not in '_RNA_UI':
-#						print( K , "-" , obj[K] )
-#			else:
-#				print("Only has RNA_UI property")
-
-
 
 ###############################################################
 #	scene = bpy.data.scenes["Scene"]
@@ -233,15 +225,23 @@ def render_all_cameras(path):
 # Runs the method
 if __name__ == "__main__":
 	clear_scene()	
+	print('draw substrate . . .')
 	draw_substrate()
-
+	print('add light 1')
 	add_light(2,-3,10,"HEMI")
+	print('add light 2')
 	add_light(0,0,12,"POINT")
+	print('add light 3')	
 	add_light(0,-10,13,"POINT")
+	print('add light 4')
 	add_light(10,0,12,"POINT")
+	print('add light 5')
 	add_light(10,-10,12,"POINT")
 
+	print('add camera 1')
 	add_camera(3,-4,20,0,0,0,"cam1")
+	print('add camera 2')
 	add_camera(2,5,5,-90,180,0,"cam2")
+	print('update scene')
 	bpy.context.scene.update()
-	render_all_cameras("/home/domenik/git-working-dir/blender-chemicals/substrate-to-blender")
+#	render_all_cameras("/home/domenik/git-working-dir/blender-chemicals/substrate-to-blender")
