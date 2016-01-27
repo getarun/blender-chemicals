@@ -1,7 +1,7 @@
 Surface Science Physics in Blender
 ====================
-This is an approach to model molecules at surfaces with correct dimensions and put them on a desired surface (fcc (111) implemented yet, see substrate-to-blender.py). Creation of hesagonal layers structured like graphene and h-BN is possible with bn-to-blender.py, too.
-![AS](http://getarun.lima-city.de/blender-chemicals/Camera.png)
+This is an approach to model molecules at surfaces with correct dimensions and put them on a desired surface (fcc (111) implemented yet, see substrate-to-blender.py). Creation of hexagonal layers structured like graphene and h-BN is possible with bn-to-blender.py, too.
+![](http://getarun.lima-city.de/blender-chemicals/Camera.png)
 ![](http://getarun.lima-city.de/blender-chemicals/One-leg-nitro-glass-marble.png	)
 ![](http://getarun.lima-city.de/blender-chemicals/atoms as volumes.png)
 ![](http://getarun.lima-city.de/blender-chemicals/caffeeine.png)
@@ -13,7 +13,6 @@ Usage
 -----
 
 Basic concepts: http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
-
 
 In order to locally convert files to the required format, you will need the
 [Open Babel](http://openbabel.org/wiki/Main_Page) library and Python bindings
