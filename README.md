@@ -1,9 +1,11 @@
 Chemicals in Blender
 ====================
-Basic concepts: http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
+
 
 Usage
 -----
+
+Basic concepts: http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
 
 In order to locally convert files to the required format, you will need the
 [Open Babel](http://openbabel.org/wiki/Main_Page) library and Python bindings
