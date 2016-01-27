@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import bpy
 from math import sin,cos,sqrt
@@ -21,8 +22,8 @@ def draw_substrate():
     d = (a1/sqrt(3)) * scale    / 7 #  original layer spacing
     overall_time = time.time()
 #Iteration index, width of substrate drawn
-    n = 100				  
-    layers = 2            ### number of layers to draw ... >8gb(15Gb) for 3rd layer with n=50(120).. .
+    n = 50		  # resembles atoms along close packed direction of moire cell created when do_square= False
+    layers = 3            ### number of layers to draw ... >8gb(15Gb) for 3rd layer with n=50(120).. .
     smooth = True
     join = False
     link_to_scene = True
@@ -30,13 +31,13 @@ def draw_substrate():
     verbose = True            # first level of verbose
     verbose2 = False        # second level of verbose
 
-    do_square = False
+    do_square = False		#creates an square overlayer and does not follow close packed lines
     if do_square:
         array_mod = True        # adds standart modifier which will duplicate the sheet in x-direction
         array_mod_count = 2        # doubles the width, so it becomes square!
     else: array_mod = False
 	
-    mirror_y = False
+    mirror_y = False		#does not work as expected ... wrong mirror plane
 # Add atom primitive
     bpy.ops.object.select_all(action='DESELECT')
     bpy.ops.mesh.primitive_uv_sphere_add()
@@ -95,10 +96,10 @@ def draw_substrate():
 			
 				
     else: 
-        for j in range(n):
+        for j in range(0,int(n/2)+1,1):					# for j in range(0,int(n/2),1): raute along close packed row
             if verbose2: print("row: ", i, " of ", n)
             row_start_time = time.time()
-            for i in range(j):
+            for i in range(-j,(n-j)+2,1):				# for i in range(-j,n-j,1): raute along close packed row
                 atom_sphere = sphere.copy()
                 atom_sphere.data = sphere.data.copy()
                 atom_sphere.location = (2*i*dx,j*dy,0)
@@ -132,7 +133,7 @@ def draw_substrate():
 ##########################
     layer = bpy.context.object
     layer.name = "Layer 1"
-    apply_list = []            # schreibt ertzeugte layer mit, damit man sie einzeln anw‰hlen kann
+    apply_list = []            # schreibt ertzeugte layer mit, damit man sie einzeln anw√§hlen kann
     apply_list.append("Layer 1")
 	
     print("Beginning stacking of layers")

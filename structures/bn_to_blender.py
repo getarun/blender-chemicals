@@ -19,21 +19,21 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 
 def draw_BN():
 # lattice dimension ... check scaling "C
-	a = 0.255			  #a in nm
+	a = 0.25			  #a in nm
 	a1 = a * 3.2792 / 1.77205 #/ 1.77205 1.9111# #correct spacings for correct nearest neighbour distance to be "a"
 
-	dx=a1*cos(30)
-	dy=a1*sin(30)/sqrt(3)	
+	dx=a1*cos(30)*1.0115836
+	dy=a1*sin(30)/sqrt(3)* 0.947583	
 
 #Iteration index, width of substrate drawn
-	n = 10
+	n = 90
 	scale = 1			#scales atomic radius jsondata*scale
 	add_vdW_balls = True
 	smooth = False
-	join = True
+	join = False
 	shapes = []
-	
-	do_square = False
+	verbose = True
+	do_square = True
 
 # Add atom samples and hide them
 	bpy.ops.object.select_all(action='DESELECT')
@@ -93,7 +93,7 @@ def draw_BN():
 
 	layer_start_time = time.time()
 	if do_square: 
-		for i in range(n):
+		for i in range(3*n):
 			for j in range(n):
 				if i not in delete_list_1:
 					if i%3==0:		#Draw B atoms
@@ -157,8 +157,10 @@ def draw_BN():
 		layer_runtime = round((time.time() - layer_start_time),2)
 		print("--- Runtime: ", layer_runtime, " seconds --- for first layer")
 	else:						
-		for j in range(n):		#range(1,n) for one N-terminated edge
-			for i in range(n-j,j+i):	#range(start,stop,increment) range(i,n+i) for raute along
+		for j in range((0,int(n/4)+1,1)):		#range(1,n) for one N-terminated edge
+			if verbose2: print("row: ", i, " of ", n)
+			row_start_time = time.time()
+			for i in range(-j,(n-j)+2,1):	#range(start,stop,increment) range(i,n+i) for raute along ?????
 				if i not in delete_list_1:
 					if i%3==0:
 						atom_sphere = sphereB.copy()
@@ -218,6 +220,9 @@ def draw_BN():
 							atom_sphere.active_material = bpy.data.materials["NvdW"]
 							bpy.context.scene.objects.link(atom_sphere)
 							shapes.append(atom_sphere)
+				row_run_time = round((time.time() - row_start_time),2)
+				if verbose: print("Time for row: ", j, " is ", row_run_time)
+
 		layer_runtime = round((time.time() - layer_start_time),2)
 		print("--- Runtime: ", layer_runtime, " seconds --- for first layer")
 
