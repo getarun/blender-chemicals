@@ -1,6 +1,7 @@
-Chemicals in Blender
+Surface Science Physics in Blender
 ====================
-![](http://getarun.lima-city.de/blender-chemicals/Camera.png)
+This is an approach to model molecules at surfaces with correct dimensions and put them on a desired surface (fcc (111) implemented yet, see substrate-to-blender.py). Creation of hesagonal layers structured like graphene and h-BN is possible with bn-to-blender.py, too.
+![AS](http://getarun.lima-city.de/blender-chemicals/Camera.png)
 ![](http://getarun.lima-city.de/blender-chemicals/One-leg-nitro-glass-marble.png	)
 ![](http://getarun.lima-city.de/blender-chemicals/atoms as volumes.png)
 ![](http://getarun.lima-city.de/blender-chemicals/caffeeine.png)
