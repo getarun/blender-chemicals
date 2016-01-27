@@ -1,11 +1,18 @@
 Chemicals in Blender
 ====================
+![](http://getarun.lima-city.de/blender-chemicals/Camera.png)
+![](http://getarun.lima-city.de/blender-chemicals/One-leg-nitro-glass-marble.png	)
+![](http://getarun.lima-city.de/blender-chemicals/atoms as volumes.png)
+![](http://getarun.lima-city.de/blender-chemicals/caffeeine.png)
+![](http://getarun.lima-city.de/blender-chemicals/sample1.png)
+![](http://getarun.lima-city.de/blender-chemicals/cam1.png)
 
 
 Usage
 -----
 
 Basic concepts: http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
+
 
 In order to locally convert files to the required format, you will need the
 [Open Babel](http://openbabel.org/wiki/Main_Page) library and Python bindings
