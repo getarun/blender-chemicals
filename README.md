@@ -1,21 +1,6 @@
 Chemicals in Blender
 ====================
-Full credit to http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
-
-useful: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel
-
-useful: http://blender.stackexchange.com/questions/9200/make-object-a-a-parent-of-object-b-via-python
-
-useful: https://openbabel.org/docs/dev/FileFormats/Overview.html#file-formats
-
-useful: http://www.blender.org/api/blender_python_api_2_76_2/
-
-useful: http://wiki.blender.org/index.php/Extensions:2.6/Py 
-
-atomic data: http://www.periodictable.com/Elements/029/data.html
-
-Draws chemicals in Blender using common input formats (smiles, molfiles, cif files,
-etc.). For details, read my [blog post](http://www.patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/).
+Basic concepts: http://patrick-fuller.com/molecules-from-smiles-molfiles-in-blender/
 
 Usage
 -----
@@ -42,18 +27,18 @@ From here, you can convert files to Javascript Object Notation with something li
 python format_converter *data* *in_format* json > molecule.json
 ```
 
-*format* is any format in [this list](http://openbabel.org/docs/2.3.0/FileFormats/Overview.html),
+*format* is any format in [this list](https://openbabel.org/docs/dev/FileFormats/Overview.html#file-formats),
 and *data* is either a string or a file containing the data specified by *format*.
 From here, use `blender -P molecule_to_blender.py` to load the molecule.
 
-The shell script is a light wrapper around these two commands. For example,
+Literature:
+====================
+[compile instructions](useful: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel)
 
-```bash
-sh draw_molecule.sh "CC(C)(C)C1=CC2(C=C(C(C)(C)C)C1=O)CC2(c1ccccc1)c1ccccc1" smi
-```
+[blenders python API reference](http://www.blender.org/api/blender_python_api_2_76_2/)
 
-will convert the input data (string or file path) and load into Blender.
+[blenders python extensions](http://wiki.blender.org/index.php/Extensions:2.6/Py)
 
-Compiling with Windows Toolchain is a pain in the ass, but described here:
+[atomic data](http://www.periodictable.com/Elements/029/data.html)
 
-http://openbabel.org/wiki/Category:Installation
+[Compiling with Windows Toolchain](http://openbabel.org/wiki/Category:Installation) is a pain in the ass, but described here:
