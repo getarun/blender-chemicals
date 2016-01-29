@@ -23,17 +23,17 @@ def draw_substrate():
 
 	a = 0.25			#lattice constant in nm
 				#sqrt(dx**2+dy**2)=sqrt(5/6)=1.095445	see factor 3.55 in readme.md
-	a1 = a * 3.517 / 1.9111	# ####3,240692139
+	a1 = a * 3.240692139 		# ####3,240692139
  #correct spacings for correct nearest neighbour distance to be a
 
 	dx=a1*cos(30)			# 0,810173035
 	dy=a1*sin(30)/sqrt(3)		# 0,935507239
 
-	d= (a1/sqrt(3)) * scale	#  original layer spacing
+	d= (a1/sqrt(3)) * scale	/ 7 #  original layer spacing
 
 	layers = 2			### number of layers to draw ... >8gb for 3rd layer with n=50... 
 #Iteration index, width of substrate drawn
-	n = 55
+	n = 20
 	smooth = False
 	join = False
 	shapes = []

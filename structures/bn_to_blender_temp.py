@@ -20,7 +20,7 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 def draw_BN():
 # lattice dimension ... check scaling "C
 	a = 0.255			  #a in nm
-	a1 = a * 3.517 / 1.9111 / 1.77205 #sqrt(dx**2+dy**2)=sqrt(5/6) #correct spacings for correct nearest neighbour distance to be "a"
+	a1 = a * 3.2792 / 1.77205 #/ 1.77205 1.9111# #correct spacings for correct nearest neighbour distance to be "a"
 
 	dx=a1*cos(30)
 	dy=a1*sin(30)/sqrt(3)	
