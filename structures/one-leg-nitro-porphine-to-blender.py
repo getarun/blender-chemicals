@@ -44,6 +44,7 @@ def draw_molecule(molecule, center=(0, 0, 0), max_molecule_size=5,
         atom["location"] = [c + x * scale for c, x in zip(center,
                                                           atom["location"])]
     draw_vdW = True
+    join = False
     # Keep references to all atoms and bonds
     shapes = []
 
@@ -181,16 +182,18 @@ def draw_molecule(molecule, center=(0, 0, 0), max_molecule_size=5,
         shape.select = True
     bpy.context.scene.objects.active = shapes[0]
     bpy.ops.object.shade_smooth()
-    bpy.ops.object.join()
+    if join: 
+        bpy.ops.object.join()
+# Center object origin to geometry    
+        bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
+    
 
-    # Center object origin to geometry
-    bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
 
     # Refresh scene
     bpy.context.scene.update()
 
 # Runs the method
 if __name__ == "__main__":
-    with open("/home/ga32xan/Network/private/git-working-dir/blender-chemicals/structures/molecule-nitro-porphine.json") as molecule_file:
+    with open("/home/ga32xan/Network/private/git-working-dir/blender-chemicals/structures/one-leg-nitro-porphine-to-blender.json") as molecule_file:
         molecule = json.load(molecule_file)
     draw_molecule(molecule, show_bonds=False)

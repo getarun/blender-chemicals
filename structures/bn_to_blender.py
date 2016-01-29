@@ -26,14 +26,16 @@ def draw_BN():
 	dy=a1*sin(30)/sqrt(3)* 0.947583	
 
 #Iteration index, width of substrate drawn
-	n = 90
+	n = 75				#if 2% lattice mismatch => 50 atoms close packed, 75 atoms in 30° rotated direction to get unit cell
 	scale = 1			#scales atomic radius jsondata*scale
 	add_vdW_balls = True
 	smooth = False
 	join = False
 	shapes = []
 	verbose = True
-	do_square = True
+	verbose2 = True
+
+	do_square = False
 
 # Add atom samples and hide them
 	bpy.ops.object.select_all(action='DESELECT')
@@ -157,10 +159,10 @@ def draw_BN():
 		layer_runtime = round((time.time() - layer_start_time),2)
 		print("--- Runtime: ", layer_runtime, " seconds --- for first layer")
 	else:						
-		for j in range((0,int(n/4)+1,1)):		#range(1,n) for one N-terminated edge
+		for j in range(0,n,1):		#range(1,n) for one N-terminated edge
 			if verbose2: print("row: ", i, " of ", n)
 			row_start_time = time.time()
-			for i in range(-j,(n-j)+2,1):	#range(start,stop,increment) range(i,n+i) for raute along ?????
+			for i in range(0,3*n,1):	#range(start,stop,increment) range(i,n+i) for raute along ?????
 				if i not in delete_list_1:
 					if i%3==0:
 						atom_sphere = sphereB.copy()
