@@ -33,22 +33,28 @@ def draw_molecule(molecule, center=(0, 0, 0), max_molecule_size=5,
     """Draw a molecule to blender. Uses loaded json molecule data."""
 
     # Get scale factor - only scales large molecules down
-    max_coord = 1E-6
-    for atom in molecule["atoms"]:
-        max_coord = max(max_coord, *[abs(a) for a in atom["location"]])
-    scale = min(max_molecule_size / max_coord, 1)
+#    max_coord = 1E-6
+#    for atom in molecule["atoms"]:
+#        max_coord = max(max_coord, *[abs(a) for a in atom["location"]])
+#    scale = min(max_molecule_size / max_coord, 1)
+    scale = 0.1 # if one gets the atomic positions through spd files, they are denoted in \AA, switch to nm => /10 in location
 
     # Scale location coordinates and add specified center
     for atom in molecule["atoms"]:
         atom["location"] = [c + x * scale for c, x in zip(center,
                                                           atom["location"])]
-
+    draw_vdW = True
+    join = False
     # Keep references to all atoms and bonds
     shapes = []
 
     # If using space-filling model, scale up atom size and remove bonds
-    if not show_bonds:
-        scale *= 2.5
+    if show_bonds:
+        bond_scale = 0.1
+        atom_scale = 0.5
+    else:
+        atom_scale = 1
+        bond_scale = 0.2
         molecule["bonds"] = []
 
     # Add atom primitive
@@ -76,19 +82,38 @@ def draw_molecule(molecule, center=(0, 0, 0), max_molecule_size=5,
         # If material for atom type has not yet been defined, do so
         if atom["element"] not in bpy.data.materials:
             key = atom["element"]
+            print("added material", key, "to materials")
             bpy.data.materials.new(name=key)
             bpy.data.materials[key].diffuse_color = atom_data[key]["color"]
             bpy.data.materials[key].specular_intensity = 0.2
+            #add vdW spheres to atoms 
+            if draw_vdW:           
+                keyvdW = atom["element"] + "-vdW"
+                bpy.data.materials.new(name=keyvdW)
+                bpy.data.materials[keyvdW].diffuse_color = atom_data[key]["color"]	#same color as atom, but with tranparancy
+                bpy.data.materials[keyvdW].use_transparency = 1
+                bpy.data.materials[keyvdW].transparency_method = "RAYTRACE"
+                bpy.data.materials[keyvdW].alpha=0.3
+                print("added vdW material", key, "to materials")
 
         # Copy mesh primitive and edit to make atom
         atom_sphere = sphere.copy()
         atom_sphere.data = sphere.data.copy()
         atom_sphere.location = atom["location"]
         atom_sphere.dimensions = [atom_data[atom["element"]]["radius"] *
-                                  scale * 2] * 3
+                                  atom_scale * 2] * 3
         atom_sphere.active_material = bpy.data.materials[atom["element"]]
         bpy.context.scene.objects.link(atom_sphere)
         shapes.append(atom_sphere)
+        keyvdW = atom["element"] + "-vdW"
+        if draw_vdW:
+            atom_sphere = sphere.copy()
+            atom_sphere.data = sphere.data.copy()
+            atom_sphere.location = atom["location"]
+            atom_sphere.dimensions = [atom_data[atom["element"]]["vdWradius"] * atom_scale] * 3
+            atom_sphere.active_material = bpy.data.materials[keyvdW]
+            bpy.context.scene.objects.link(atom_sphere)
+            shapes.append(atom_sphere)
 
     # Draw bonds
     for bond in molecule["bonds"]:
@@ -134,8 +159,7 @@ def draw_molecule(molecule, center=(0, 0, 0), max_molecule_size=5,
         for i in range(bond["order"]):
             bond_cylinder = cylinder.copy()
             bond_cylinder.data = cylinder.data.copy()
-            bond_cylinder.dimensions = [atom_data["bond"]["radius"] * scale *
-                                        2] * 2 + [mag]
+            bond_cylinder.dimensions = [atom_data["bond"]["radius"] * bond_scale] * 2 + [mag]
             bond_cylinder.location = [c + scale * v for c,
                                       v in zip(cent, trans[i])]
             bond_cylinder.rotation_mode = "AXIS_ANGLE"
@@ -158,16 +182,18 @@ def draw_molecule(molecule, center=(0, 0, 0), max_molecule_size=5,
         shape.select = True
     bpy.context.scene.objects.active = shapes[0]
     bpy.ops.object.shade_smooth()
-    bpy.ops.object.join()
+    if join: 
+        bpy.ops.object.join()
+# Center object origin to geometry    
+        bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
+    
 
-    # Center object origin to geometry
-    bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY", center="MEDIAN")
 
     # Refresh scene
     bpy.context.scene.update()
 
 # Runs the method
 if __name__ == "__main__":
-    with open("molecule.json") as molecule_file:
+    with open("/home/ga32xan/Network/private/git-working-dir/blender-chemicals/structures/one-leg-nitro-porphine-to-blender.json") as molecule_file:
         molecule = json.load(molecule_file)
-    draw_molecule(molecule, show_bonds=True)
+    draw_molecule(molecule, show_bonds=False)
