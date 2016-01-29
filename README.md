@@ -36,7 +36,7 @@ From here, use `blender -P molecule_to_blender.py` to load the molecule.
 
 Literature:
 ====================
-[compile instructions](useful: http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel)
+[compile instructions](http://openbabel.org/docs/dev/Installation/install.html#compiling-open-babel)
 
 [blenders python API reference](http://www.blender.org/api/blender_python_api_2_76_2/)
 
