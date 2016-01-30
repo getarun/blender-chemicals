@@ -1,2 +1,6 @@
+*.blender.crash.txt
+*.sh~
+*.json~
+*.py~
 *.pyc
 *.blend*
