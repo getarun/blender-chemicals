@@ -1,0 +1,30 @@
+{
+    "atoms": [
+        { "element": "C", "location": [ -0.762072, 1.168456, -0.001607 ] },
+        { "element": "C", "location": [ -1.392949, -0.075743, -0.000980 ] },
+        { "element": "C", "location": [ 0.630880, 1.244201, -0.000627 ] },
+        { "element": "C", "location": [ -0.630877, -1.244202, 0.000627 ] },
+        { "element": "C", "location": [ 1.392949, 0.075746, 0.000980 ] },
+        { "element": "C", "location": [ 0.762069, -1.168458, 0.001607 ] },
+        { "element": "H", "location": [ -1.355575, 2.078458, -0.002859 ] },
+        { "element": "H", "location": [ -2.477785, -0.134735, -0.001744 ] },
+        { "element": "H", "location": [ 1.122210, 2.213192, -0.001115 ] },
+        { "element": "H", "location": [ -1.122210, -2.213192, 0.001115 ] },
+        { "element": "H", "location": [ 2.477786, 0.134735, 0.001744 ] },
+        { "element": "H", "location": [ 1.355575, -2.078457, 0.002859 ] }
+    ],
+    "bonds": [
+        { "atoms": [ 0, 1 ], "order": 2 },
+        { "atoms": [ 0, 2 ], "order": 1 },
+        { "atoms": [ 1, 3 ], "order": 1 },
+        { "atoms": [ 3, 5 ], "order": 2 },
+        { "atoms": [ 4, 5 ], "order": 1 },
+        { "atoms": [ 2, 4 ], "order": 2 },
+        { "atoms": [ 0, 6 ], "order": 1 },
+        { "atoms": [ 2, 8 ], "order": 1 },
+        { "atoms": [ 4, 10 ], "order": 1 },
+        { "atoms": [ 5, 11 ], "order": 1 },
+        { "atoms": [ 3, 9 ], "order": 1 },
+        { "atoms": [ 1, 7 ], "order": 1 }
+    ]
+}

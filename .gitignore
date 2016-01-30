@@ -1,4 +1,5 @@
 *.*~
-*.blend
-*.blend1
 *.png
+*.blender.crash.txt
+*.pyc
+*.blend*
