@@ -16,9 +16,9 @@ def draw_substrate():
     a = 0.361             #lattice constant in nm
     element = "Cu"
     a1 = a * 3.20432      # ####3,240692139
-    hexagonal = True
+    hexagonal = False
     square = False
-    rect = False
+    rect = True
     if hexagonal:       # 111
         a1 *= sqrt(2)/2        
         dx=a1*cos(30)*1.0115836        # *1.0115836 to get nearest neighbour to 0.255
@@ -46,8 +46,8 @@ def draw_substrate():
     overall_time = time.time()
 #Iteration index, width of substrate drawn
 
-    n = 10		  # resembles atoms along close packed direction of moire cell created when do_square= False
-    layers = 8            ### number of layers to draw ... >8gb(15Gb) for 3rd layer with n=50(120).. .
+    n = 30		  # resembles atoms along close packed direction of moire cell created when do_square= False
+    layers = 3            ### number of layers to draw ... >8gb(15Gb) for 3rd layer with n=50(120).. .
     smooth = True
     join = True     #set to false if you want to check distances for debugging purposes
     link_to_scene = True
