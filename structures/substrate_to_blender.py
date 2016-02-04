@@ -13,11 +13,11 @@ with open(os.path.join(PATH, "atoms.json")) as in_file:
 
 def draw_substrate():
     scale = 1             #scales atomic radius by scale - does not change lattice constant
-    a = 0.361             #lattice constant in nm
-    element = "Cu"
+    a = 0.408             #lattice constant in nm   #Cu: 0.361 Ag: 0.408
+    element = "Ag"
     a1 = a * 3.20432      # ####3,240692139
-    hexagonal = True
-    square = False
+    hexagonal = False
+    square = True
     rect = False
     if hexagonal:       # 111
         a1 *= sqrt(2)/2        
@@ -46,8 +46,8 @@ def draw_substrate():
     overall_time = time.time()
 #Iteration index, width of substrate drawn
 
-    n = 10		  # resembles atoms along close packed direction of moire cell created when do_square= False
-    layers = 8            ### number of layers to draw ... >8gb(15Gb) for 3rd layer with n=50(120).. .
+    n = 100		  # resembles atoms along close packed direction of moire cell created when do_square= False
+    layers = 3            ### number of layers to draw ... >8gb(15Gb) for 3rd layer with n=50(120).. .
     smooth = True
     join = True     #set to false if you want to check distances for debugging purposes
     link_to_scene = True
