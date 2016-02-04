@@ -6,33 +6,32 @@ from math import sin,cos,sqrt
 from mathutils import Vector
 import json
 import os, time
-
-PATH = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(PATH, "atoms.json")) as in_file:
+## Keep atoms.json in same dir as the script file
+with open("atoms.json") as in_file:
     atom_data = json.load(in_file)
 
 def draw_substrate():
     scale = 1             #scales atomic radius by scale - does not change lattice constant
-    a = 0.408             #lattice constant in nm   #Cu: 0.361 Ag: 0.408
-    element = "Ag"
-    a1 = a * 3.20432      # ####3,240692139
+    element = "Cu"        # changes lattice constant as in atoms.json-file, Ag, Cu implemented already
+    a = atom_data[element]["fcc-const"]
+    a1 = a * 3.20432      # scale to 1bu = 1nm
     hexagonal = False
-    square = True
-    rect = False
+    square = False
+    rect = True
     if hexagonal:       # 111
         a1 *= sqrt(2)/2        
         dx=a1*cos(30)*1.0115836        # *1.0115836 to get nearest neighbour to 0.255
-        dy=a1*sin(30)/sqrt(3)* 0.947583    #     ------------ " --------------
-        d = (a1/sqrt(3)) * scale    / 5 #  original layer spacing
-        do_square = False
-        different_stacking = 3
+        dy=a1*sin(30)/sqrt(3)* 0.947583    #     correct angle
+        d = (a1/sqrt(3)) * scale    / 5 #  original layer spacing / 5 to make it more realistic
+        do_square = False           #   set creation method for the for-loops
+        different_stacking = 3      #default: 3
     if square:          # 100
         a1 *= sqrt(2)/2       
         dx = a1 * 0.312079648       #   match correct spacing
         dy = a1 * 0.312079648
         d = (a1/sqrt(1)) * scale    / 5 #  original layer spacing
         do_square = True
-        different_stacking = 2
+        different_stacking = 2      #default: 2
     if rect:            #110
         a2 = a1        
         a1 *= sqrt(2)/2    
@@ -41,13 +40,13 @@ def draw_substrate():
         dy = a2 * 0.312079648
         d = (a1/sqrt(2)) * scale    / 5 #  original layer spacing
         do_square = True
-        different_stacking = 2
+        different_stacking = 2      #default: 2
 
     overall_time = time.time()
 #Iteration index, width of substrate drawn
 
-    n = 100		  # resembles atoms along close packed direction of moire cell created when do_square= False
-    layers = 3            ### number of layers to draw ... >8gb(15Gb) for 3rd layer with n=50(120).. .
+    n = 50		  # resembles atoms along close packed direction of moire cell created when do_square= False
+    layers = different_stacking            ### number of layers to draw ... >8gb(15Gb) for 3rd layer with n=50(120).. .
     smooth = True
     join = True     #set to false if you want to check distances for debugging purposes
     link_to_scene = True
@@ -70,7 +69,7 @@ def draw_substrate():
         key = element + str(i)
         if verbose2: print("Creating Material", key)
         bpy.data.materials.new(name=key)
-        bpy.data.materials[key].diffuse_color = (pow(1*0.6,i), pow(0.638152*0.6,i), pow(0.252242*0.6,i))    #light brown
+        bpy.data.materials[key].diffuse_color = (pow(atom_data[element]["color"][0]*0.6,i), pow(atom_data[element]["color"][1]*0.6,i), pow(atom_data[element]["color"][2]*0.6,i))    
 #        bpy.data.materials[key].diffuse_color = atom_data[element]["color"]
         bpy.data.materials[key].diffuse_intensity = 0.7 - 0.2*i
         bpy.data.materials[key].specular_intensity = 0.2 - 0.1*i
