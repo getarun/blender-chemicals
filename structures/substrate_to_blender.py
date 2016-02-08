@@ -82,9 +82,10 @@ def draw_substrate():
 
     if rect: 
         for i in range(n):
+            print("Drawing row: ",i)
             row_start_time = time.time()
             for j in range(n):
-                if verbose2: print("Atom: ", j, " of ", n)
+                if verbose2: print("Row: ",i," -- Atom: ", j, " of ", n)
 
                 atom_sphere = sphere.copy()
                 atom_sphere.data = sphere.data.copy()
@@ -94,14 +95,14 @@ def draw_substrate():
                 shapes.append(atom_sphere)
 
             row_run_time = round((time.time() - row_start_time),2)
-            if verbose: print("Time for row: ", i, " in layer I is ", row_run_time)
+            if verbose: print("Time for row: ", i, " is ", row_run_time)
     
 
     if square: 
         for i in range(n):
             row_start_time = time.time()
             for j in range(n):
-                if verbose2: print("Atom: ", j, " of ", n)
+                if verbose2: print("Row: ",i," -- Atom: ", j, " of ", n)
 
                 atom_sphere = sphere.copy()
                 atom_sphere.data = sphere.data.copy()
@@ -117,9 +118,10 @@ def draw_substrate():
     if hexagonal: 
         if do_square:
             for i in range(n):
+                print("Drawing row: ",i)
                 row_start_time = time.time()
                 for j in range(n):
-                    if verbose2: print("Atom: ", j, " of ", n)
+                    if verbose2: print("Row: ",i," -- Atom: ", j, " of ", n)
 
                     atom_sphere = sphere.copy()
                     atom_sphere.data = sphere.data.copy()
@@ -135,12 +137,13 @@ def draw_substrate():
                     bpy.context.scene.objects.link(atom_sphere)
                     shapes.append(atom_sphere)
                 row_run_time = round((time.time() - row_start_time),2)
-                if verbose: print("Time for row: ", j, " in layer I is ", row_run_time)
+                if verbose: print("Time for row: ", i, " is ", row_run_time)
         else:
             for j in range(0,int(n/2)+1,1):					# for j in range(0,int(n/2),1): raute along close packed row
-                if verbose2: print("row: ", i, " of ", n)
+                if verbose2: print("row: ", j, " of ", n)
                 row_start_time = time.time()
                 for i in range(-j,(n-j)+2,1):				# for i in range(-j,n-j,1): raute along close packed row
+                    if verbose2: print("Row: ",i," -- Atom: ", j, " of ", n)
                     atom_sphere = sphere.copy()
                     atom_sphere.data = sphere.data.copy()
                     atom_sphere.location = (2*i*dx,j*dy,0)
@@ -156,7 +159,7 @@ def draw_substrate():
                     shapes.append(atom_sphere)
                     if verbose2: print("Atom: ",i)
                 row_run_time = round((time.time() - row_start_time),2)
-                if verbose: print("Time for row: ", j, " in layer I is ", row_run_time)
+                if verbose: print("Time for row: ", j, " is ", row_run_time)
 
     layer_runtime = round((time.time() - layer_start_time),2)
     print("--- Runtime: ", layer_runtime, " seconds --- for first layer")
