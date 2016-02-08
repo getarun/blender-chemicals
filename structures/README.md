@@ -12,8 +12,8 @@ Save it somewhere and call "blender -P /where/you/saved/the/file/"
 
 Be sure to have the "atoms.json" in the same directory where the pyton script file you call is located.
 
-#### All-In one:
-#!/bin/bash
-python ../format_converter/format_converter.py INPUTFILE.INFILETYPE INFILETYPE OUTFILETYPE > OUTPUTFILE.OUTFILETYPE
-# rewrite python script file to match correct path and check existence of atoms.json
-blender -P pythonscriptfile.py
+'#### All-In one:
+'#!/bin/bash '  
+'python ../format_converter/format_converter.py INPUTFILE.INFILETYPE INFILETYPE OUTFILETYPE > OUTPUTFILE.OUTFILETYPE '  
+'# rewrite python script file to match correct path and check existence of atoms.json '  
+'blender -P pythonscriptfile.py '  
