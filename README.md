@@ -1,6 +1,6 @@
 Surface Science Physics in Blender
 ====================
-This is an approach to model molecules at surfaces with correct dimensions and put them on a desired surface (fcc yet). Creation of hexagonal 2D-layers structured like graphene and h-BN is possible, too.
+This is an approach to model molecules at surfaces with correct dimensions and put them on a desired surface (fcc (100),(110),(111) yet). Creation of hexagonal 2D-layers structured like graphene and h-BN is possible, too.  Check the [wiki](https://github.com/getarun/blender-chemicals/wiki)
 ![](http://getarun.lima-city.de/blender-chemicals/render-output-3/Full-view-TOP.png)
 
 Usage
