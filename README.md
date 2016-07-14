@@ -14,9 +14,10 @@ For all those lucky unix users:
 
 ```
 sudo apt-get install build-essential python-dev libpython-dev libcairo2-dev libxml2-dev zlib1g-dev libeigen2-dev
-
+# sudo apt-get install git
 git clone https://github.com/openbabel/openbabel
 mkdir build && cd build
+# sudo apt-get install cmake
 cmake ../openbabel -DPYTHON_BINDINGS=ON
 make && make install
 
@@ -24,7 +25,7 @@ sudo apt-get install blender
 ```
 Compilation doesn't always perform like a charm, so if this fails without hope of success, look for some online-En-/Decoder.
 
-From here, you can convert files to Javascript Object Notation with something like
+Once you compiled and installed the format-framework, you can convert files to Javascript Object Notation with something like
 
 ```
 python format_converter *data* *in_format* json > molecule.json
