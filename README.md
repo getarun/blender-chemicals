@@ -13,7 +13,8 @@ For more, read through the [Open Babel installation instructions](http://openbab
 For all those lucky unix users:
 
 ```
-sudo apt-get install build-essential python-dev libpython-dev libcairo2-dev libxml2-dev zlib1g-dev libeigen2-dev
+sudo apt-get install build-essential python-dev libpython-dev 
+sudo apt-get install swig libcairo2-dev libxml2-dev zlib1g-dev libeigen2-dev
 # sudo apt-get install git
 git clone https://github.com/openbabel/openbabel
 mkdir build && cd build
